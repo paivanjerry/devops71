@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "amqplib": "^0.10.3",
+    "axios": "^1.1.0",
+    "http": "^0.0.1-security"
+  },
+  "scripts": {
+    "start": "node index.js"
+  }
+}

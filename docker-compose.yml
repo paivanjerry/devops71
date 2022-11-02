@@ -1,0 +1,70 @@
+version: '2.1'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+#    ports: 
+#        - 5673:5672 # communication between the nodes and CLI tool
+#        - 15673:15672 # communication with the web management API 
+    volumes:
+        # data persistence
+        - /docker_conf/rabbitmq/data/:/var/lib/rabbitmq/
+        - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+        # data mapping -> host: container
+        # queues and messages data of the container will be stored on the host
+    networks:
+        - rabbitmq_net
+    restart: always
+
+  original:
+    depends_on:
+        - rabbitmq
+    container_name: ORIG
+    restart: on-failure
+    build:
+      context: ./original
+    volumes:
+        - .:/original
+    networks:
+      - rabbitmq_net
+
+  intermediate:
+    depends_on:
+        - rabbitmq
+    restart: on-failure
+    container_name: IMED
+    build:
+      context: ./intermediate
+    volumes:
+        - .:/intermediate
+    networks:
+      - rabbitmq_net
+
+  observer:
+    depends_on:
+        - rabbitmq
+    container_name: OBSE
+    restart: on-failure
+    build:
+      context: ./observer
+    volumes:
+        - shared-volume:/appdata
+    networks:
+      - rabbitmq_net
+
+  httpserver:
+    container_name: HTTPSERV
+    build: ./httpserver
+    volumes:
+        - shared-volume:/appdata
+    ports:
+    - "8080:8080"
+    restart: always
+
+networks:
+  rabbitmq_net:
+    driver: bridge
+
+volumes:
+  shared-volume:
