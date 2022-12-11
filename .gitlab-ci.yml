@@ -33,9 +33,11 @@ build-job:       # This job runs in the build stage, which runs first.
   script:
     - echo "Compiling the code..."
     - docker-compose build --no-cache
-    - docker-compose up -d
+    - docker-compose up -d --scale tests=0
+    - sleep 20
     - docker-compose down
     - echo "Compile complete."
+
 
 unit-test-job:   # This job runs in the test stage.
   stage: test    # It only starts when the job in the build stage completes successfully.
@@ -43,6 +45,7 @@ unit-test-job:   # This job runs in the test stage.
     - echo "Test stage starting"
     - docker-compose build --no-cache
     - docker-compose up -d
+    - sleep 20
     - docker-compose down
     - echo "Test stage done"
 
