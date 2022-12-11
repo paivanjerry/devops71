@@ -59,8 +59,16 @@ services:
     volumes:
         - shared-volume:/appdata
     ports:
-    - "8080:8080"
+    - "8083:8083"
     restart: always
+
+  tests:
+    depends_on:
+        - rabbitmq
+    restart: on-failure
+    container_name: TEST
+    build:
+      context: ./tests
 
 networks:
   rabbitmq_net:
