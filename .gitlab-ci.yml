@@ -44,9 +44,10 @@ unit-test-job:   # This job runs in the test stage.
   script:
     - echo "Test stage starting"
     - docker-compose build --no-cache
-    - docker-compose up
+    - docker-compose up -d
 
     - sleep 20
+    - docker-compose logs --since 2m tests
     - docker-compose down
     - echo "Test stage done"
 
