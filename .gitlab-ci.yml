@@ -46,10 +46,12 @@ test-job:   # This job runs in the test stage.
     - docker-compose build --no-cache
     - docker-compose up -d
     - sleep 20
+    - docker-compose logs --since 2m tests
     - STR=$(docker-compose logs --since 2m tests)
     - FAILED='test failed'
     - docker-compose down
-    - if [[ "$STR" == *"$FAILED"* ]]; then   echo "PIPELINE FAILED" exit 1; fi
+    - if [[ "$STR" == *"$FAILED"* ]]; then echo "PIPELINE FAILED" exit 1; fi
+    - if [[ "$STR" == *"$FAILED"* ]]; then exit 1; fi
     - echo "Test stage done"
 
 
