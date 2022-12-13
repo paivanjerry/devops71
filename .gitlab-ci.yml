@@ -47,8 +47,11 @@ unit-test-job:   # This job runs in the test stage.
     - docker-compose up -d
 
     - sleep 20
-    - docker-compose logs --since 2m tests
+    - docker-compose up -d
+    - STR=$(docker-compose logs --since 2m tests)
+    - FAILED='test failed'
     - docker-compose down
+    - if [[ "$STR" == *"$FAILED"* ]]; then   echo "PIPELINE FAILED" exit 1; fi
     - echo "Test stage done"
 
 
