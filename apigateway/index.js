@@ -7,7 +7,7 @@ http.createServer( async function (req, res) {
   try {
     
     if(url === '/messages'){
-      let axiosRes = await axios.get("http://httpserver:8080")
+      let axiosRes = await axios.get("http://httpserver:8080/messages")
       console.log("API GAY TAY WAY DATA", axiosRes.data);
       res.writeHead(200, {'Content-Type': 'text/plain'});
       res.write(axiosRes.data); 

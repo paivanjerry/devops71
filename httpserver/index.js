@@ -18,6 +18,12 @@ http.createServer(function (req, res) {
       res.end();
       return
     }
+    else{
+      res.writeHead(500, {'Content-Type': 'text/plain'});
+      res.write("Not implemented");
+      res.end();
+      return
+    }
     
   } catch (err) {
     res.writeHead(500, {'Content-Type': 'text/plain'});

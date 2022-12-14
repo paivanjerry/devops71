@@ -7,7 +7,6 @@ function sleep(ms) {
 }
 
 const testMessagesRoute = async () => {
-  console.log("Test 1: get messages");
     try{
       let res = await axios.get("http://apigateway:8083/messages")
       if(res.status !== 200){
@@ -17,7 +16,7 @@ const testMessagesRoute = async () => {
         console.log("ERROR, CONTENT NOT TEXT/PLAIN");
       }
       else{
-        console.log("Test 1 succeeded, data:", res.data);
+        console.log("testMessagesRoute succeeded, data:", res.data);
         return true
       }
       
@@ -29,7 +28,6 @@ const testMessagesRoute = async () => {
 }
 
 const testGetStateRoute = async (expectedStatus) => {
-  console.log("Test 1: get state");
     try{
       let res = await axios.get("http://apigateway:8083/state")
       if(res.status !== 200){
@@ -42,7 +40,7 @@ const testGetStateRoute = async (expectedStatus) => {
         console.log("Wrong state, expected", expectedStatus, "got", res.data)
       }
       else{
-        console.log("Test 2 succeeded, data:", res.data);
+        console.log("testGetStateRoute succeeded, data:", res.data);
         return true
       }
     }
@@ -53,14 +51,13 @@ const testGetStateRoute = async (expectedStatus) => {
 }
 
 const testPutStateRoute = async (newState) => {
-  console.log("Test 1: put state");
     try{
       let res = await axios.put("http://apigateway:8083/state",{ newState})
       if(res.status !== 200){
         console.log("ERROR, STATUS NOT OK");
       }
       else{
-        console.log("Put state succeeded, data:", res.data);
+        console.log("testPutStateRoute succeeded, data:", res.data);
         return true
       }
     }
@@ -72,7 +69,7 @@ const testPutStateRoute = async (newState) => {
 
 
 const testGetRunLog = async (expectedWords) => {
-  console.log("Test 1: get messages");
+  
     try{
       let res = await axios.get("http://apigateway:8083/state")
       if(res.status !== 200){
@@ -83,12 +80,13 @@ const testGetRunLog = async (expectedWords) => {
         console.log("ERROR, CONTENT NOT TEXT/PLAIN");
         return false
       }
-      for(let word of  expectedWords){
+      for(let word of expectedWords){
         if(!res.data.includes(word)){
           console.logg("State", word, "not included in run log:",res.data)
           return false
         }
       }
+      console.log("testGetRunLog succeeded, data:", res.data);
 
       return true
       
@@ -102,18 +100,24 @@ const testGetRunLog = async (expectedWords) => {
 const init = async () => {
     let failedTestAmount = 0
     console.log("Starting to run the tests")
+    console.log("Test 1: testMessagesRoute");
     if(!(await testMessagesRoute())){
       failedTestAmount += 1
     }
+    console.log("Test 2: testGetStateRoute");
     if(!(await testGetStateRoute("RUNNING"))){
       failedTestAmount += 1
     }
+    console.log("Test 3: testPutStateRoute");
     if(!(await testPutStateRoute("PAUSED"))){
       failedTestAmount += 1
     }
+    console.log("Test 4: testGetStateRoute");
     if(!(await testGetStateRoute("PAUSED"))){
       failedTestAmount += 1
     }
+    console.log("Test 5: testGetRunLog");
+
     if(!(await testGetRunLog(["INIT", "RUNNING", "PAUSED"]))){
       failedTestAmount += 1
     }
