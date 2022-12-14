@@ -1,4 +1,5 @@
 const amqplib = require('amqplib');
+const fs = require('fs')
 
 
 let runs = 0
@@ -11,34 +12,41 @@ const init = async () => {
   // RabbitMQ ok, sleep 5 sec to allow others to listen first
   if(runs == 0){
     await sleep(5000)
+    const stateFilePath = '../../appdata/thestate.txt'
+    let dateStr = (new Date()).toISOString()
+    fs.appendFileSync(stateFilePath, "\n" + dateStr + " " + "RUNNING" );
+  }
+  // TODO READ FILE SYNC AND IF ITS NOT RUNNING, CALL THIS FUNC WITH DELAY AND RETURN CURRENT EXEC 
+  const data = fs.readFileSync('../../appdata/thestate.txt', 'utf8');
+  let splitted = data.split("\n")
+  if(!splitted[splitted.length -1].includes("RUNNING")){
+    console.log("System not running-state, no messages will be sent");
+    setTimeout(async () => {await init()}, 3000)
+    return
   }
 
-      try {
-        runs += 1
-        const exchange = 'compse140';
-        const routingKey = 'compse140.o';
+  try {
+    runs += 1
+    const exchange = 'compse140';
+    const routingKey = 'compse140.o';
 
-        await channel.assertExchange(exchange, 'topic', {durable: true});
-        const msg = "MSG_" + runs;
-        channel.publish(exchange, routingKey, Buffer.from(msg));
-        console.log('Message published', msg);
-        
-      } catch(e) {
-        console.error('Error while publishing', e);
-      } finally {
-        await channel.close();
-        await connection.close();
-        console.log('Connection closed');
-      }
-      if(runs < 3){
-        setTimeout(async () => {await init()}, 3000)
-      }
-      else{
-        console.log("ORIG's job here is done!")
-
-      }
-      
+    await channel.assertExchange(exchange, 'topic', {durable: true});
+    const msg = "MSG_" + runs;
+    channel.publish(exchange, routingKey, Buffer.from(msg));
+    console.log('Message published', msg);
+    
+  } catch(e) {
+    console.error('Error while publishing', e);
+  } finally {
+    await channel.close();
+    await connection.close();
+    console.log('Connection closed');
   }
+  
+  setTimeout(async () => {await init()}, 3000)
+
+  
+}
 
 
 

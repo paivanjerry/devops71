@@ -6,7 +6,6 @@ let messagesReceived = 0
 const ensureEmptyFile = () => {
   const filePath = '../../appdata/thefile.txt'
   fs.closeSync(fs.openSync(filePath, 'w'))
-  console.log("File emptied");
 }
 const writeRow = (msg) => {
   let topic = msg.fields.routingKey
