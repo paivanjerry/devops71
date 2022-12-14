@@ -52,7 +52,7 @@ const testGetStateRoute = async (expectedStatus) => {
 
 const testPutStateRoute = async (newState) => {
     try{
-      let res = await axios.put("http://apigateway:8083/state",{ newState})
+      let res = await axios.put("http://apigateway:8083/state", newState)
       if(res.status !== 200){
         console.log("ERROR, STATUS NOT OK");
       }
@@ -71,7 +71,7 @@ const testPutStateRoute = async (newState) => {
 const testGetRunLog = async (expectedWords) => {
   
     try{
-      let res = await axios.get("http://apigateway:8083/state")
+      let res = await axios.get("http://apigateway:8083/run-log")
       if(res.status !== 200){
         console.log("ERROR, STATUS NOT OK");
         return false
@@ -82,7 +82,7 @@ const testGetRunLog = async (expectedWords) => {
       }
       for(let word of expectedWords){
         if(!res.data.includes(word)){
-          console.logg("State", word, "not included in run log:",res.data)
+          console.log("State", word, "not included in run log:",res.data)
           return false
         }
       }
@@ -133,4 +133,4 @@ const init = async () => {
 
 
 
-setTimeout( async () => { await init() }, 15000 )
+setTimeout( async () => { await init() }, 25000 )
