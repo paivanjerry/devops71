@@ -6,6 +6,12 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+let testMode = process.env.TESTMODE
+console.log("Test container arg first " + testMode);
+console.log("Test container arg second", testMode === "1");
+
+//--build-arg TESTMODE=1
+
 const testMessagesRoute = async () => {
     try{
       let res = await axios.get("http://apigateway:8083/messages")
