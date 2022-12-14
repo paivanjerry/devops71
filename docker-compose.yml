@@ -59,6 +59,15 @@ services:
     volumes:
         - shared-volume:/appdata
     ports:
+    - "8080:8080"
+    restart: always
+
+  apigateway:
+    container_name: APIGATEWAY
+    build: ./apigateway
+    volumes:
+        - shared-volume:/appdata
+    ports:
     - "8083:8083"
     restart: always
 

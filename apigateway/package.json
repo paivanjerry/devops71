@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "http": "^0.0.1-security",
+    "axios": "^1.0.0"
+  },
+  "scripts": { 
+    "test": "mocha ../tests/**/*.js",
+    "start": "node index.js" 
+  },
+  "devDependencies": {
+    "mocha": "^10.1.0"
+  }
+}

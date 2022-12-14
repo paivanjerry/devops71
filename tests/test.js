@@ -9,7 +9,7 @@ function sleep(ms) {
 const testMessagesRoute = async () => {
   console.log("Test 1: get messages");
     try{
-      let res = await axios.get("http://httpserver:8083/messages")
+      let res = await axios.get("http://apigateway:8083/messages")
       if(res.status !== 200){
         console.log("ERROR, STATUS NOT OK");
       }
@@ -31,7 +31,7 @@ const testMessagesRoute = async () => {
 const testGetStateRoute = async (expectedStatus) => {
   console.log("Test 1: get state");
     try{
-      let res = await axios.get("http://httpserver:8083/state")
+      let res = await axios.get("http://apigateway:8083/state")
       if(res.status !== 200){
         console.log("ERROR, STATUS NOT OK");
       }
@@ -55,7 +55,7 @@ const testGetStateRoute = async (expectedStatus) => {
 const testPutStateRoute = async (newState) => {
   console.log("Test 1: put state");
     try{
-      let res = await axios.put("http://httpserver:8083/state",{ newState})
+      let res = await axios.put("http://apigateway:8083/state",{ newState})
       if(res.status !== 200){
         console.log("ERROR, STATUS NOT OK");
       }
@@ -74,7 +74,7 @@ const testPutStateRoute = async (newState) => {
 const testGetRunLog = async (expectedWords) => {
   console.log("Test 1: get messages");
     try{
-      let res = await axios.get("http://httpserver:8083/state")
+      let res = await axios.get("http://apigateway:8083/state")
       if(res.status !== 200){
         console.log("ERROR, STATUS NOT OK");
         return false
