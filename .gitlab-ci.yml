@@ -28,8 +28,7 @@ test-job:
     - echo "Test stage starting"
     #- docker-compose build --no-cache
     - docker-compose --profile test up -d --build
-    - sleep 20
-    - sleep 30
+    - sleep 120
     - docker-compose logs --since 2m tests
     - sleep 20
     - docker-compose logs --since 2m tests
