@@ -31,6 +31,8 @@ test-job:
     - sleep 20
     - sleep 30
     - docker-compose logs --since 2m tests
+    - sleep 20
+    - docker-compose logs --since 2m tests
     - STR=$(docker-compose logs --since 2m tests)
     - FAILED='test failed'
     - docker-compose down
