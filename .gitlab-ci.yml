@@ -28,7 +28,8 @@ test-job:
     - echo "Test stage starting"
     - docker-compose build --no-cache
     - docker-compose --profile test up -d
-    - sleep 45
+    - sleep 20
+    - sleep 30
     - docker-compose logs --since 2m tests
     - STR=$(docker-compose logs --since 2m tests)
     - FAILED='test failed'

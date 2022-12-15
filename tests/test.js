@@ -8,7 +8,7 @@ function sleep(ms) {
 
 const testMessagesRoute = async () => {
     try{
-      await sleep(6000)
+      await sleep(15000)
       let res = await axios.get("http://apigateway:8083/messages",{
         headers: {
         'Accept': 'text/plain'
