@@ -11,10 +11,16 @@ const init = async () => {
   const channel = await connection.createChannel();
   // RabbitMQ ok, sleep 5 sec to allow others to listen first
   if(runs == 0){
+    console.log("ORIG SLEEP 5");
     await sleep(5000)
+    console.log("ORIG SLEPT");
     const stateFilePath = '../../appdata/thestate.txt'
     let dateStr = (new Date()).toISOString()
+    console.log("ORIG APPENDING");
+
     fs.appendFileSync(stateFilePath, "\n" + dateStr + " " + "RUNNING" );
+    console.log("ORIG APPENDED");
+
   }
   // TODO READ FILE SYNC AND IF ITS NOT RUNNING, CALL THIS FUNC WITH DELAY AND RETURN CURRENT EXEC 
   const data = fs.readFileSync('../../appdata/thestate.txt', 'utf8');
