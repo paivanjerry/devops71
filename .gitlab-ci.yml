@@ -29,10 +29,11 @@ test-job:
     #- docker-compose build --no-cache
     - docker-compose --profile test up -d --build
     - sleep 240
-    - docker-compose logs --since 2m tests
+    - docker-compose logs --since 4m tests
     - sleep 20
-    - docker-compose logs --since 2m tests
-    - docker-compose logs --since 2m original
+    - docker-compose logs --since 4m tests
+    - docker-compose logs --since 4m original
+    - docker-compose logs --since 4m rabbitmq
     - STR=$(docker-compose logs --since 2m tests)
     - FAILED='test failed'
     - docker-compose down
