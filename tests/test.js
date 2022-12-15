@@ -8,7 +8,9 @@ function sleep(ms) {
 
 const testMessagesRoute = async () => {
     try{
+      console.log("Started testmsgroute first ", (new Date()).toISOString());
       await sleep(15000)
+      console.log("Started testmsgroute second ", (new Date()).toISOString());
       let res = await axios.get("http://apigateway:8083/messages",{
         headers: {
         'Accept': 'text/plain'
@@ -93,7 +95,10 @@ const testGetRunLog = async (expectedWords) => {
       }
       for(let word of expectedWords){
         if(!res.data.includes(word)){
-          console.log("State", word, "not included in run log:",res.data)
+          console.log("State", word, "not included in run log:\n",res.data)
+          let dateStr = (new Date()).toISOString()
+
+          console.log("Time now " + dateStr);
           return false
         }
       }
@@ -115,6 +120,7 @@ const init = async () => {
     if(!(await testMessagesRoute())){
       failedTestAmount += 1
     }
+
     console.log("Test 2: testGetStateRoute");
     if(!(await testGetStateRoute("RUNNING"))){
       failedTestAmount += 1

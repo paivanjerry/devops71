@@ -8,26 +8,26 @@ before_script:
   - docker info
   
 stages: 
-  - build
+#  - build
   - test
 
-build-job: 
-  stage: build
-  script:
-    - echo "Compiling the code..."
-    - docker-compose build --no-cache
-    - docker-compose up -d
-    - sleep 20
-    - docker-compose down
-    - echo "Compile complete."
+#build-job: 
+  #stage: build
+  #script:
+ #   - echo "Compiling the code..."
+#    - docker-compose build --no-cache
+#    - docker-compose up -d
+#    - sleep 20
+#    - docker-compose down
+#    - echo "Compile complete."
 
 
 test-job:
   stage: test
   script:
     - echo "Test stage starting"
-    - docker-compose build --no-cache
-    - docker-compose --profile test up -d
+    #- docker-compose build --no-cache
+    - docker-compose --profile test up -d --build
     - sleep 20
     - sleep 30
     - docker-compose logs --since 2m tests
