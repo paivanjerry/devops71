@@ -7,7 +7,10 @@ http.createServer( async function (req, res) {
   try {
     
     if(url === '/messages'){
-      let axiosRes = await axios.get("http://httpserver:8080/messages")
+      let axiosRes = await axios.get("http://httpserver:8080/messages",{
+        headers: {
+        'Accept': 'text/plain'
+      }})
       console.log("API GAY TAY WAY DATA", axiosRes.data);
       res.writeHead(200, {'Content-Type': 'text/plain'});
       res.write(axiosRes.data); 
@@ -35,7 +38,20 @@ http.createServer( async function (req, res) {
         //body = Buffer.concat(body).toString();
         // At this point, we have the headers, method, url and body, and can now
         // do whatever we need to in order to respond to this request.
-        fs.appendFileSync(stateFilePath, "\n" + dateStr + " " + body );
+        if(body !== "INIT" && body !== "PAUSED" && body !== "RUNNING" && body !== "SHUTDOWN"){
+          res.writeHead(500, {'Content-Type': 'text/plain'});
+          res.write('WRONG STATE');
+          res.end();
+          return
+        }
+        const data = fs.readFileSync('../../appdata/thestate.txt', 'utf8');
+        let splitted = data.split("\n")
+        let lastLine = splitted[splitted.length -1]
+        let currentState = lastLine.split(" ")[1]
+        if(currentState !== body){
+          fs.appendFileSync(stateFilePath, "\n" + dateStr + " " + body );
+        }
+        
         res.writeHead(200, {'Content-Type': 'text/plain'});
         res.write('OK');
         res.end();

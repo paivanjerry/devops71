@@ -6,15 +6,12 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-let testMode = process.env.TESTMODE
-console.log("Test container arg first " + testMode);
-console.log("Test container arg second", testMode === "1");
-
-//--build-arg TESTMODE=1
-
 const testMessagesRoute = async () => {
     try{
-      let res = await axios.get("http://apigateway:8083/messages")
+      let res = await axios.get("http://apigateway:8083/messages",{
+        headers: {
+        'Accept': 'text/plain'
+      }})
       if(res.status !== 200){
         console.log("ERROR, STATUS NOT OK");
       }
@@ -35,7 +32,10 @@ const testMessagesRoute = async () => {
 
 const testGetStateRoute = async (expectedStatus) => {
     try{
-      let res = await axios.get("http://apigateway:8083/state")
+      let res = await axios.get("http://apigateway:8083/state",{
+        headers: {
+        'Accept': 'text/plain'
+      }})
       if(res.status !== 200){
         console.log("ERROR, STATUS NOT OK");
       }
@@ -59,7 +59,7 @@ const testGetStateRoute = async (expectedStatus) => {
 const testPutStateRoute = async (newState) => {
     try{
       let res = await axios.put("http://apigateway:8083/state", newState)
-      if(res.status !== 200){
+      if(res.status !== 200 || res.data !== "OK"){
         console.log("ERROR, STATUS NOT OK");
       }
       else{
@@ -77,7 +77,10 @@ const testPutStateRoute = async (newState) => {
 const testGetRunLog = async (expectedWords) => {
   
     try{
-      let res = await axios.get("http://apigateway:8083/run-log")
+      let res = await axios.get("http://apigateway:8083/run-log",{
+        headers: {
+        'Accept': 'text/plain'
+      }})
       if(res.status !== 200){
         console.log("ERROR, STATUS NOT OK");
         return false
@@ -139,4 +142,4 @@ const init = async () => {
 
 
 
-setTimeout( async () => { await init() }, 25000 )
+setTimeout( async () => { await init() }, 28000 )
