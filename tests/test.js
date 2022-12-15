@@ -142,4 +142,4 @@ const init = async () => {
 
 
 
-setTimeout( async () => { await init() }, 34000 )
+setTimeout( async () => { await init() }, 40000 )
