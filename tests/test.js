@@ -8,6 +8,7 @@ function sleep(ms) {
 
 const testMessagesRoute = async () => {
     try{
+      await sleep(6000)
       let res = await axios.get("http://apigateway:8083/messages",{
         headers: {
         'Accept': 'text/plain'
@@ -18,6 +19,7 @@ const testMessagesRoute = async () => {
       else if(res.headers['content-type'] !== "text/plain"){
         console.log("ERROR, CONTENT NOT TEXT/PLAIN");
       }
+      
       else{
         console.log("testMessagesRoute succeeded, data:", res.data);
         return true
